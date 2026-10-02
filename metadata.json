@@ -1,0 +1,6 @@
+{
+  "name": "Lemon & Melon | Sweet × Sour Artisan Foods & Refreshments",
+  "description": "Official home of Lemon & Melon — playful, juicy artisan drinks, sorbets, fresh mochi, and sweet × sour treats handcrafted with sunny ingredients.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
