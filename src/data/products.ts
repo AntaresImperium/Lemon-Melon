@@ -30,11 +30,36 @@ export interface Review {
   comment: string;
 }
 
-// Official brand logo image from user upload
-import logoImg from '../assets/images/official_brand_logo_1791122370922.jpg';
+// Local copy of user's exact original logo (1.48MB original file)
+import localOriginalLogo from '../assets/images/original_user_logo.png';
 import heroImg from '../assets/images/hero_summer_spread_1790920717023.jpg';
 
-export { logoImg, heroImg };
+/**
+ * Official Original Logo URL from Google Drive:
+ * Source: https://drive.google.com/file/d/1GeUmFGqcfIzEKX96yZl-W1_OrPNEmcnc/view?usp=sharing
+ * Direct Web URL: https://lh3.googleusercontent.com/d/1GeUmFGqcfIzEKX96yZl-W1_OrPNEmcnc
+ */
+export const OFFICIAL_DRIVE_SHARE_LINK = 'https://drive.google.com/file/d/1GeUmFGqcfIzEKX96yZl-W1_OrPNEmcnc/view?usp=sharing';
+export const OFFICIAL_LOGO_URL = 'https://lh3.googleusercontent.com/d/1GeUmFGqcfIzEKX96yZl-W1_OrPNEmcnc';
+
+/**
+ * Converts any Google Drive sharing link into a high-res, direct-loadable image URL.
+ */
+export function formatDriveImageUrl(url: string): string {
+  if (!url || !url.trim()) return '';
+  const trimmed = url.trim();
+  const fileIdMatch = trimmed.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if (fileIdMatch && fileIdMatch[1]) {
+    const fileId = fileIdMatch[1];
+    return `https://lh3.googleusercontent.com/d/${fileId}`;
+  }
+  return trimmed;
+}
+
+// Exact official logo used throughout the application (using user's exact original logo)
+export const logoImg: string = localOriginalLogo || OFFICIAL_LOGO_URL;
+
+export { heroImg };
 
 /**
  * Official products list.
