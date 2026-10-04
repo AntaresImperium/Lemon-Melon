@@ -53,19 +53,21 @@ export const Navbar: React.FC<NavbarProps> = ({
               e.preventDefault();
               onNavigate('hero');
             }}
-            className="flex items-center gap-2.5 group"
+            className="flex items-center gap-2.5 group cursor-pointer"
           >
             <img
               src={logoImg}
               alt="Lemon & Melon Logo"
-              className="w-11 h-11 rounded-full shadow-sm border border-[#FED729] group-hover:rotate-6 transition-transform object-cover"
+              className="w-11 h-11 rounded-full shadow-sm border border-[#FED729] group-hover:rotate-6 group-hover:scale-105 transition-transform duration-200 object-cover"
               referrerPolicy="no-referrer"
             />
-            <div className="flex flex-col">
-              <span className="font-display font-bold text-2xl tracking-tight text-[#1E2022] group-hover:text-[#FF3F5E] transition-colors leading-none">
-                Lemon & Melon
+            <div className="flex flex-col origin-left transition-transform duration-200 ease-out group-hover:scale-[1.05]">
+              <span className="font-display font-bold text-2xl tracking-tight text-[#1E2022] leading-none">
+                <span className="text-[#1E2022] group-hover:text-[#D99200] transition-colors duration-200">Lemon</span>
+                <span className="text-[#1E2022] mx-1">&</span>
+                <span className="text-[#1E2022] group-hover:text-[#FF3F5E] transition-colors duration-200">Melon</span>
               </span>
-              <span className="text-[10px] font-semibold text-[#8B6A00] tracking-wider uppercase">
+              <span className="text-[10px] font-semibold text-[#8B6A00] tracking-wider uppercase transition-colors duration-200">
                 Sweet × Sour Foods
               </span>
             </div>

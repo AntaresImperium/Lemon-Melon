@@ -36,11 +36,11 @@ import heroImg from '../assets/images/hero_summer_spread_1790920717023.jpg';
 
 /**
  * Official Original Logo URL from Google Drive:
- * Source: https://drive.google.com/file/d/1GeUmFGqcfIzEKX96yZl-W1_OrPNEmcnc/view?usp=sharing
- * Direct Web URL: https://lh3.googleusercontent.com/d/1GeUmFGqcfIzEKX96yZl-W1_OrPNEmcnc
+ * Source: https://drive.google.com/file/d/1ipLeireSe3TJF9rv5hulSyxZK3aD83PS/view?usp=sharing
+ * Direct Web URL: https://lh3.googleusercontent.com/d/1ipLeireSe3TJF9rv5hulSyxZK3aD83PS
  */
-export const OFFICIAL_DRIVE_SHARE_LINK = 'https://drive.google.com/file/d/1GeUmFGqcfIzEKX96yZl-W1_OrPNEmcnc/view?usp=sharing';
-export const OFFICIAL_LOGO_URL = 'https://lh3.googleusercontent.com/d/1GeUmFGqcfIzEKX96yZl-W1_OrPNEmcnc';
+export const OFFICIAL_DRIVE_SHARE_LINK = 'https://drive.google.com/file/d/1ipLeireSe3TJF9rv5hulSyxZK3aD83PS/view?usp=sharing';
+export const OFFICIAL_LOGO_URL = 'https://lh3.googleusercontent.com/d/1ipLeireSe3TJF9rv5hulSyxZK3aD83PS';
 
 /**
  * Converts any Google Drive sharing link into a high-res, direct-loadable image URL.
