@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Sparkles, ArrowRight, RefreshCw, Check } from 'lucide-react';
-import { Product, PRODUCTS } from '../data/products';
+import { Sparkles, ArrowRight, RefreshCw, Check, Beaker } from 'lucide-react';
+import { Product, PRODUCTS, logoImg } from '../data/products';
 
 interface FlavorLabProps {
   onSelectProduct: (product: Product) => void;
@@ -12,18 +12,20 @@ export const FlavorLab: React.FC<FlavorLabProps> = ({ onSelectProduct }) => {
   const [texture, setTexture] = useState<'drink' | 'sorbet' | 'chew' | 'gummy'>('drink');
 
   // Match algorithm
-  const getRecommendation = (): Product => {
+  const getRecommendation = (): Product | null => {
+    if (PRODUCTS.length === 0) return null;
+
     if (texture === 'drink' || vibe === 'energized') {
       return PRODUCTS.find((p) => p.id === 'lm-sparkling-cooler') || PRODUCTS[0];
     }
     if (texture === 'sorbet' || tolerance === 'low') {
-      return PRODUCTS.find((p) => p.id === 'lm-sorbet-trio') || PRODUCTS[1];
+      return PRODUCTS.find((p) => p.id === 'lm-sorbet-trio') || PRODUCTS[1] || PRODUCTS[0];
     }
     if (texture === 'chew') {
-      return PRODUCTS.find((p) => p.id === 'lm-fruit-mochi') || PRODUCTS[2];
+      return PRODUCTS.find((p) => p.id === 'lm-fruit-mochi') || PRODUCTS[2] || PRODUCTS[0];
     }
     if (texture === 'gummy' || tolerance === 'high') {
-      return PRODUCTS.find((p) => p.id === 'lm-sour-gummies') || PRODUCTS[3];
+      return PRODUCTS.find((p) => p.id === 'lm-sour-gummies') || PRODUCTS[3] || PRODUCTS[0];
     }
     return PRODUCTS[0];
   };
@@ -43,7 +45,7 @@ export const FlavorLab: React.FC<FlavorLabProps> = ({ onSelectProduct }) => {
           </h2>
           <p className="text-sm text-[#5C5542] mt-2">
             Not sure whether Lemmy's sour kick or Melly's sweet chill is right for you today? 
-            Answer 3 quick taps to find your signature match.
+            Calibrate your personal palate preference below.
           </p>
         </div>
 
@@ -137,52 +139,77 @@ export const FlavorLab: React.FC<FlavorLabProps> = ({ onSelectProduct }) => {
 
           {/* Recommendation Match Card */}
           <div className="md:col-span-5 bg-[#FFFDF0] rounded-2xl p-5 border border-[#FED729] shadow-xs flex flex-col justify-between h-full">
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#8B6A00] flex items-center gap-1">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  Your Optimal Match
+            {recommended ? (
+              <>
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#8B6A00] flex items-center gap-1">
+                      <Sparkles className="w-3.5 h-3.5" />
+                      Your Optimal Match
+                    </span>
+                    <span className="text-xs font-bold text-[#3BB35E] bg-[#EBF8EE] px-2 py-0.5 rounded-md">
+                      98% Match
+                    </span>
+                  </div>
+
+                  <div className="relative rounded-xl overflow-hidden aspect-[4/3] mb-3 border border-[#F0E4BE]">
+                    <img
+                      src={recommended.image}
+                      alt={recommended.name}
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  <h3 className="font-display font-bold text-lg text-[#1E2022]">
+                    {recommended.name}
+                  </h3>
+                  <p className="text-xs text-[#5C5542] mt-1 leading-relaxed">
+                    {recommended.shortDesc}
+                  </p>
+                </div>
+
+                <div className="pt-4 border-t border-[#E8DEC0] mt-4 flex items-center justify-between">
+                  <div>
+                    <span className="font-mono tabular-nums text-lg font-bold text-[#1E2022]">
+                      ${recommended.price.toFixed(2)}
+                    </span>
+                    <span className="text-[10px] text-[#7A705A] block">
+                      Fresh today
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={() => onSelectProduct(recommended)}
+                    className="px-4 py-2.5 bg-[#FF3F5E] hover:bg-[#E62A48] text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span>View My Treat</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-6">
+                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 border border-[#FED729]">
+                  <Beaker className="w-6 h-6 text-[#8B6A00]" />
+                </div>
+                <span className="text-xs font-bold uppercase tracking-wider text-[#8B6A00] block mb-1">
+                  Taste Profile Calibrated!
                 </span>
-                <span className="text-xs font-bold text-[#3BB35E] bg-[#EBF8EE] px-2 py-0.5 rounded-md">
-                  98% Match
-                </span>
+                <h4 className="font-display font-bold text-base text-[#1E2022] mb-1">
+                  Ready For The Official Drop
+                </h4>
+                <p className="text-xs text-[#5C5542] leading-relaxed mb-4">
+                  Lemmy and Melly have logged your preference ({vibe} energy, {tolerance} sourness, {texture} texture). As soon as the first recipes are posted to the menu, your direct recommendation will appear right here!
+                </p>
+                <a
+                  href="#story"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-[#FF3F5E] hover:underline"
+                >
+                  Propose a custom treat recipe →
+                </a>
               </div>
-
-              <div className="relative rounded-xl overflow-hidden aspect-[4/3] mb-3 border border-[#F0E4BE]">
-                <img
-                  src={recommended.image}
-                  alt={recommended.name}
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              <h3 className="font-display font-bold text-lg text-[#1E2022]">
-                {recommended.name}
-              </h3>
-              <p className="text-xs text-[#5C5542] mt-1 leading-relaxed">
-                {recommended.shortDesc}
-              </p>
-            </div>
-
-            <div className="pt-4 border-t border-[#E8DEC0] mt-4 flex items-center justify-between">
-              <div>
-                <span className="font-mono tabular-nums text-lg font-bold text-[#1E2022]">
-                  ${recommended.price.toFixed(2)}
-                </span>
-                <span className="text-[10px] text-[#7A705A] block">
-                  Fresh today
-                </span>
-              </div>
-
-              <button
-                onClick={() => onSelectProduct(recommended)}
-                className="px-4 py-2.5 bg-[#FF3F5E] hover:bg-[#E62A48] text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
-              >
-                <span>View My Treat</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
+            )}
 
           </div>
 

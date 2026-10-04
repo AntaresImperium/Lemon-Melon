@@ -33,21 +33,8 @@ export default function App() {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  // Cart State (initialize with default popular item)
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: 'init-1',
-      productId: PRODUCTS[0].id,
-      product: PRODUCTS[0],
-      quantity: 2,
-    },
-    {
-      id: 'init-2',
-      productId: PRODUCTS[1].id,
-      product: PRODUCTS[1],
-      quantity: 1,
-    }
-  ]);
+  // Cart State (initialized empty for official launch)
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   // Checkout discount tracking
   const [checkoutDiscount, setCheckoutDiscount] = useState(0);
@@ -133,7 +120,7 @@ export default function App() {
       longDesc: `Custom box with ${items.map((i) => i.name).join(', ')}. ${giftNote ? `Gift note: "${giftNote}"` : ''}`,
       ingredients: ['Custom assembled orchard treats'],
       servingSize: '4 full-size items',
-      image: items[0]?.image || PRODUCTS[0].image,
+      image: items[0]?.image || logoImg,
       mascotEndorsement: {
         mascot: 'duo',
         quote: '"Your hand-picked personal crate!" — Lemmy & Melly',
@@ -225,32 +212,68 @@ export default function App() {
           )}
         </div>
 
-        {/* Category Filter Tabs (Functional segmented buttons with zero-pill discipline) */}
-        <div className="flex items-center gap-1.5 p-1 bg-[#F5EED8] rounded-xl overflow-x-auto mb-8 max-w-3xl">
-          {[
-            { id: 'all', label: 'All Treats' },
-            { id: 'drinks', label: 'Sparkling Drinks' },
-            { id: 'sorbets', label: 'Twin Sorbets' },
-            { id: 'mochi', label: 'Artisan Mochi' },
-            { id: 'gummies', label: 'Sour Gummies' },
-            { id: 'bundles', label: 'Tasting Crates' },
-          ].map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
-              className={`px-3.5 py-2 text-xs font-bold rounded-lg transition-all whitespace-nowrap cursor-pointer ${
-                selectedCategory === cat.id
-                  ? 'bg-white text-[#1E2022] shadow-xs'
-                  : 'text-[#5C5542] hover:text-[#1E2022]'
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
+        {/* Category Filter Tabs (shown when products exist) */}
+        {PRODUCTS.length > 0 && (
+          <div className="flex items-center gap-1.5 p-1 bg-[#F5EED8] rounded-xl overflow-x-auto mb-8 max-w-3xl">
+            {[
+              { id: 'all', label: 'All Treats' },
+              { id: 'drinks', label: 'Sparkling Drinks' },
+              { id: 'sorbets', label: 'Twin Sorbets' },
+              { id: 'mochi', label: 'Artisan Mochi' },
+              { id: 'gummies', label: 'Sour Gummies' },
+              { id: 'bundles', label: 'Tasting Crates' },
+            ].map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.id)}
+                className={`px-3.5 py-2 text-xs font-bold rounded-lg transition-all whitespace-nowrap cursor-pointer ${
+                  selectedCategory === cat.id
+                    ? 'bg-white text-[#1E2022] shadow-xs'
+                    : 'text-[#5C5542] hover:text-[#1E2022]'
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+        )}
 
-        {/* Product Grid */}
-        {displayedProducts.length > 0 ? (
+        {/* Product Grid or Launch Prep State */}
+        {PRODUCTS.length === 0 ? (
+          <div className="bg-white rounded-3xl p-8 sm:p-14 text-center border border-[#F0E6CA] shadow-xs max-w-3xl mx-auto">
+            <div className="flex justify-center mb-4">
+              <img
+                src={logoImg}
+                alt="Lemon & Melon Mascot"
+                className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md ring-4 ring-[#FED729]"
+              />
+            </div>
+            <span className="text-xs font-bold uppercase tracking-wider text-[#A37B00] bg-[#FFF4C2] px-3 py-1 rounded-full inline-block mb-3">
+              Kitchen Preparation Stage
+            </span>
+            <h3 className="font-display text-2xl sm:text-3xl font-bold text-[#1E2022] mb-3">
+              Our Official Menu Drops Are In The Kitchen! 🍋🍉
+            </h3>
+            <p className="text-xs sm:text-sm text-[#5C5542] leading-relaxed max-w-xl mx-auto mb-6">
+              Edward and the Lemon & Melon crew are currently cooking and testing our first batch of official recipes. 
+              As each new sweet & sour item is perfected, it will be added directly to this menu with live ordering, ingredients, and tasting ratings!
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <button
+                onClick={() => scrollToSection('story')}
+                className="px-5 py-2.5 bg-[#FF3F5E] hover:bg-[#E62A48] text-white text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
+              >
+                Propose What Food We Should Make →
+              </button>
+              <button
+                onClick={() => scrollToSection('box-builder')}
+                className="px-5 py-2.5 bg-[#FFF4C2] hover:bg-[#FED729] text-[#1E2022] text-xs font-bold rounded-xl transition-colors cursor-pointer"
+              >
+                Preview The 4-Pack Crate
+              </button>
+            </div>
+          </div>
+        ) : displayedProducts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {displayedProducts.map((prod) => (
               <ProductCard

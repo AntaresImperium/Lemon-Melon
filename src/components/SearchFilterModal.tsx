@@ -98,7 +98,9 @@ export const SearchFilterModal: React.FC<SearchFilterModalProps> = ({
         <div className="max-h-[60vh] overflow-y-auto p-4 space-y-2.5">
           {filtered.length === 0 ? (
             <div className="py-12 text-center text-xs text-[#7A705A]">
-              No treats match "{searchTerm}". Try searching "lemon", "cooler", or "sorbet"!
+              {PRODUCTS.length === 0
+                ? "Our first official menu items are currently simmering in the kitchen! Check back soon or propose a treat in the Flavor Lab."
+                : `No treats match "${searchTerm}". Try searching "lemon", "cooler", or "sorbet"!`}
             </div>
           ) : (
             filtered.map((product) => (
